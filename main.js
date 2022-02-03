@@ -21,11 +21,7 @@ function modelLoaded(){
     Status=true;
 }
 
-function play(){
-    song.play();
-    song.setVolume(1);
-    song.rate(1);
-}
+
 
 function gotResult(error , results){
     if(error){
@@ -45,23 +41,25 @@ if(Status != ""){
     r = random(255);
     g = random(255);
     b = random(255);
-    
-    if(Status!=true){
-        document.getElementById("fnd_nfnd").innerHTML="Baby found";
-        }
-        else if(Status=true){
-            document.getElementById("fnd_nfnd").innerHTML="Baby Not found";
-            song=song.play();
 
     for(i=0; i<objects.length; i++){
-        document.getElementById("status").innerHTML = "Status : Object Detected";
         fill(r,g,b);
         percent = floor(objects[i].confidence * 100);
         text(objects[i].label + " " + percent + "%" , objects[i].x+15 , objects[i].y+15);
         noFill();
         stroke(r,g,b);
         rect(objects[i].x , objects[i].y , objects[i].width , objects[i].height);
+
+        if(objects[i].label == "person"){
+            document.getElementById("status").innerHTML = "Status : Object Detected";
+            document.getElementById("fnd_nfnd").innerHTML="Baby Found";
+            song.stop();
+            }
+            else{
+                document.getElementById("fnd_nfnd").innerHTML="Baby Not Found";
+                document.getElementById("status").innerHTML = "Status : Object Detected";
+                song.play();
+            }
     }
-}
 }
 }
